@@ -7,7 +7,7 @@ param
   [Parameter(Mandatory = $True, Position = 0)]
   [ValidateNotNullOrEmpty()]
   [String]
-  $svcAccount,
+  $svcAccount
 
 #   [Parameter(Mandatory = $True, Position = 1)]
 #   [ValidateNotNullOrEmpty()]
