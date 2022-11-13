@@ -84,4 +84,4 @@ if (-not (Get-LocalGroupMember -Group "Administrators" -Member "*$($svcAccount)*
  
 #  Set-WSManInstance @listener
 
-#  Stop-Transcript
+Stop-Transcript
