@@ -34,54 +34,54 @@ if (-not (Get-LocalGroupMember -Group "Administrators" -Member "*$($svcAccount)*
   Add-LocalGroupMember -Group "Administrators" -Member "$svcAccount"
 }
 
-while ($count -le 30) {
-  $existingCert = Get-ChildItem cert:\CurrentUser\My\ | Where-Object Subject -match $rootCertName 
+# while ($count -le 30) {
+#   $existingCert = Get-ChildItem cert:\CurrentUser\My\ | Where-Object Subject -match $rootCertName 
 
-  if (-not $existingCert) {
-    $count++
-    Start-Sleep -Seconds 1
-  } else {
-    break
-  }
+#   if (-not $existingCert) {
+#     $count++
+#     Start-Sleep -Seconds 1
+#   } else {
+#     break
+#   }
 
-  if ($count -eq 30) {
-    throw "Failed to find root certificate $rootCertName"
-  }
-}
+#   if ($count -eq 30) {
+#     throw "Failed to find root certificate $rootCertName"
+#   }
+# }
 
-$IP = (Get-NetIPAddress -InterfaceAlias $interfaceAlias -AddressFamily IPv4).IPAddress
-$ShortName = "$($Env:COMPUTERNAME)"
-$FQDN = "$($Env:COMPUTERNAME).$(($domain).ToLower())"
+# $IP = (Get-NetIPAddress -InterfaceAlias $interfaceAlias -AddressFamily IPv4).IPAddress
+# $ShortName = "$($Env:COMPUTERNAME)"
+# $FQDN = "$($Env:COMPUTERNAME).$(($domain).ToLower())"
 
-$StopLoop = $false
-$RetryCount = 0
+# $StopLoop = $false
+# $RetryCount = 0
 
-do {
-  try {
-    $Cert = Get-Certificate -Template WebServerExportPrivate -DnsName $IP,$ShortName,$FQDN -SubjectName "CN=$($FQDN)" -CertStoreLocation 'cert:\CurrentUser\My\'
-    $StopLoop = $true
-  }
-  catch {
-    if ($RetryCount -gt 5) {
-      Write-Host "Could not get certificate after 5 retries."
-      $StopLoop = $true
-    } else {
-      Write-Host "Could not get certificate, retrying in 30 seconds..."
-      Start-Sleep -Seconds 30
-      $RetryCount = $RetryCount + 1
-    }
-  }
-}
-while ($StopLoop -eq $false)
+# do {
+#   try {
+#     $Cert = Get-Certificate -Template WebServerExportPrivate -DnsName $IP,$ShortName,$FQDN -SubjectName "CN=$($FQDN)" -CertStoreLocation 'cert:\CurrentUser\My\'
+#     $StopLoop = $true
+#   }
+#   catch {
+#     if ($RetryCount -gt 5) {
+#       Write-Host "Could not get certificate after 5 retries."
+#       $StopLoop = $true
+#     } else {
+#       Write-Host "Could not get certificate, retrying in 30 seconds..."
+#       Start-Sleep -Seconds 30
+#       $RetryCount = $RetryCount + 1
+#     }
+#   }
+# }
+# while ($StopLoop -eq $false)
 
-$CertificateThumbprint = $Cert.Certificate.Thumbprint
+# $CertificateThumbprint = $Cert.Certificate.Thumbprint
 
-$listener = @{
-   ResourceURI = "winrm/config/Listener"
-   SelectorSet = @{Address="*";Transport="HTTPS"}
-   ValueSet = @{CertificateThumbprint=$CertificateThumbprint}
- }
+# $listener = @{
+#    ResourceURI = "winrm/config/Listener"
+#    SelectorSet = @{Address="*";Transport="HTTPS"}
+#    ValueSet = @{CertificateThumbprint=$CertificateThumbprint}
+#  }
  
- Set-WSManInstance @listener
+#  Set-WSManInstance @listener
 
- Stop-Transcript
+#  Stop-Transcript
