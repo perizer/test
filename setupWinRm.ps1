@@ -1,38 +1,40 @@
-#Requires -Version 5.0
+# #Requires -Version 5.0
 
-[CmdletBinding(SupportsShouldProcess = $True)]
+# [CmdletBinding(SupportsShouldProcess = $True)]
          
-param 
-(
-  [Parameter(Mandatory = $True, Position = 0)]
-  [ValidateNotNullOrEmpty()]
-  [String]
-  $svcAccount,
+# param 
+# (
+#   [Parameter(Mandatory = $True, Position = 0)]
+#   [ValidateNotNullOrEmpty()]
+#   [String]
+#   $svcAccount,
 
-  [Parameter(Mandatory = $True, Position = 1)]
-  [ValidateNotNullOrEmpty()]
-  [String]
-  $domain,
+#   [Parameter(Mandatory = $True, Position = 1)]
+#   [ValidateNotNullOrEmpty()]
+#   [String]
+#   $domain,
 
-  [Parameter(Mandatory = $True, Position = 2)]
-  [ValidateNotNullOrEmpty()]
-  [String]
-  $rootCertName,
+#   [Parameter(Mandatory = $True, Position = 2)]
+#   [ValidateNotNullOrEmpty()]
+#   [String]
+#   $rootCertName,
 
-  [Parameter(Position = 3)]
-  [String]
-  $interfaceAlias = "Ethernet0*"
-)
+#   [Parameter(Position = 3)]
+#   [String]
+#   $interfaceAlias = "Ethernet0*"
+# )
 
-Start-Transcript -Path C:\Temp\setupWinRm.log
+# Start-Transcript -Path C:\Temp\setupWinRm.log
 
-W32tm /resync /force
+# W32tm /resync /force
 
-Write-Host "Current Time: $(Get-Date -Format o)"
+# Write-Host "Current Time: $(Get-Date -Format o)"
 
-if (-not (Get-LocalGroupMember -Group "Administrators" -Member "*$($svcAccount)*" -ErrorAction SilentlyContinue)) {
-  Add-LocalGroupMember -Group "Administrators" -Member "$svcAccount"
-}
+# if (-not (Get-LocalGroupMember -Group "Administrators" -Member "*$($svcAccount)*" -ErrorAction SilentlyContinue)) {
+
+Add-LocalGroupMember -Group "Administrators" -Member "$svcAccount"
+
+# }
 
 # while ($count -le 30) {
 #   $existingCert = Get-ChildItem cert:\CurrentUser\My\ | Where-Object Subject -match $rootCertName 
