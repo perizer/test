@@ -1,13 +1,13 @@
-# #Requires -Version 5.0
+#Requires -Version 5.0
 
-# [CmdletBinding(SupportsShouldProcess = $True)]
+[CmdletBinding(SupportsShouldProcess = $True)]
          
-# param 
-# (
-#   [Parameter(Mandatory = $True, Position = 0)]
-#   [ValidateNotNullOrEmpty()]
-#   [String]
-#   $svcAccount,
+param 
+(
+  [Parameter(Mandatory = $True, Position = 0)]
+  [ValidateNotNullOrEmpty()]
+  [String]
+  $svcAccount,
 
 #   [Parameter(Mandatory = $True, Position = 1)]
 #   [ValidateNotNullOrEmpty()]
@@ -22,7 +22,7 @@
 #   [Parameter(Position = 3)]
 #   [String]
 #   $interfaceAlias = "Ethernet0*"
-# )
+)
 
 # Start-Transcript -Path C:\Temp\setupWinRm.log
 
@@ -86,4 +86,4 @@ Add-LocalGroupMember -Group "Administrators" -Member "$svcAccount"
  
 #  Set-WSManInstance @listener
 
-Stop-Transcript
+# Stop-Transcript
