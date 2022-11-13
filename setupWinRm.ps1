@@ -11,3 +11,10 @@ param
 )
 
 Add-LocalGroupMember -Group "Administrators" -Member "$svcAccount"
+
+$listener = @{
+   ResourceURI = "winrm/config/Listener"
+   SelectorSet = @{Address="*";Transport="HTTP"}
+ }
+ 
+Set-WSManInstance @listener
